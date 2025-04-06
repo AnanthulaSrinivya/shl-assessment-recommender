@@ -4,7 +4,13 @@ from typing import List, Dict
 import pandas as pd
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Sample SHL product catalog
 catalog = pd.DataFrame([
     {
