@@ -1,0 +1,56 @@
+SHL Assessment Recommendation Engine – Approach Document
+✅ Objective:
+To build a Streamlit-based SHL Assessment Recommendation Engine that suggests appropriate SHL assessments based on user-inputted role characteristics using SHL's product catalogue.
+
+🧠 Step-by-Step Approach:
+1. Understanding the Problem
+Goal: Recommend suitable SHL assessments based on role type, job level, and skills.
+
+Input: Role information via Streamlit UI.
+
+Output: Top recommended SHL assessments with descriptions.
+
+2. Data Preparation
+Source: SHL product catalogue (CSV or structured format).
+
+Preprocessed to ensure uniform role descriptions, levels, and assessment mappings.
+
+Encoded relevant columns where needed (e.g., role levels, skill tags).
+
+3. Recommendation Logic
+Implemented a rule-based matching + cosine similarity logic using:
+
+Job role match
+
+Level alignment
+
+Skill-based similarity (TF-IDF or keyword match)
+
+4. App Development (Streamlit)
+Built an interactive front-end with:
+
+Dropdowns for role, job level, and skills.
+
+Output section showing recommended SHL assessments.
+
+matplotlib used for optional visualizations (e.g., role fit score).
+
+Code structured in a modular way for clarity and scalability.
+
+5. Deployment
+Pushed code to a public GitHub repository.
+
+Created a requirements.txt with necessary libraries.
+
+Deployed on Streamlit Community Cloud:
+
+Selected repo, branch, and entry file (shl_1.py).
+
+Streamlit handled environment setup automatically.
+
+🧰 Tech Stack:
+Frontend: Streamlit
+
+Backend: Python (pandas, scikit-learn, matplotlib)
+
+Deployment: Streamlit Community Cloud + GitHub
