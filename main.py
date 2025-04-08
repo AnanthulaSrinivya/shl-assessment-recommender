@@ -6,27 +6,8 @@ import pandas as pd
 app = FastAPI()
 
 # Updated catalog with additional real SHL assessments
-# Updated catalog with additional real SHL assessments
 catalog = pd.DataFrame([
     {
-        "url": "https://www.shl.com/solutions/products/product-catalog/view/python-new/",
-        "adaptive_support": "No",
-        "description": "Multi-choice test that measures the knowledge of Python programming, databases, modules and library. For Mid-Prof",
-        "duration": 11,
-        "remote_support": "Yes",
-        "test_type": ["Knowledge & Skills"],
-        "tags": ["python", "programming", "databases", "modules", "library"],
-        "suitable_for": ["Mid"],
-        "use_case": ["Hiring"]
-    },
-    {
-        "url": "https://www.shl.com/solutions/products/product-catalog/view/technology-professional-8-0-job-focused-assessment/",
-        "adaptive_support": "No",
-        "description": "The Technology Job Focused Assessment assesses key behavioral attributes required for success in fast-paced, rapid environments",
-        "duration": 16,
-        "remote_support": "Yes",
-        "test_type": ["Competencies", "Personality & Behaviour"],
-        "tags": ["technology", "behavior", "fast-paced", "adaptability"],
         "url": "https://www.shl.com/solutions/products/product-catalog/view/python-new/",
         "adaptive_support": "No",
         "description": "Multi-choice test that measures the knowledge of Python programming, databases, modules and library. For Mid-Prof",
@@ -49,13 +30,6 @@ catalog = pd.DataFrame([
         "use_case": ["Hiring"]
     },
     {
-        "url": "https://www.shl.com/solutions/products/product-catalog/view/occupational-personality-questionnaire-opq/",
-        "adaptive_support": "No",
-        "description": "Assesses personality traits to predict job fit and performance using a forced-choice format",
-        "duration": 20,
-        "remote_support": "Yes",
-        "test_type": ["Personality & Behaviour"],
-        "tags": ["personality", "leadership", "teamwork", "motivation"],
         "url": "https://www.shl.com/solutions/products/product-catalog/view/occupational-personality-questionnaire-opq/",
         "adaptive_support": "No",
         "description": "Assesses personality traits to predict job fit and performance using a forced-choice format",
@@ -85,46 +59,10 @@ catalog = pd.DataFrame([
         "remote_support": "Yes",
         "test_type": ["Ability & Aptitude"],
         "tags": ["numerical", "data-analysis", "statistics"],
-        "url": "https://www.shl.com/solutions/products/product-catalog/view/verify-g-plus/",
-        "adaptive_support": "Yes",
-        "description": "Measures general cognitive ability through numerical, inductive, and deductive reasoning tasks",
-        "duration": 36,
-        "remote_support": "Yes",
-        "test_type": ["Ability & Aptitude"],
-        "tags": ["reasoning", "problem-solving", "numerical", "logical"],
-        "suitable_for": ["Entry", "Mid", "Senior"],
-        "use_case": ["Hiring"]
-    },
-    {
-        "url": "https://www.shl.com/solutions/products/product-catalog/view/numerical-reasoning-test/",
-        "adaptive_support": "No",
-        "description": "Evaluates ability to interpret and analyze numerical data from graphs and tables",
-        "duration": 20,
-        "remote_support": "Yes",
-        "test_type": ["Ability & Aptitude"],
-        "tags": ["numerical", "data-analysis", "statistics"],
         "suitable_for": ["Entry", "Mid"],
         "use_case": ["Hiring"]
     },
     {
-        "url": "https://www.shl.com/solutions/products/product-catalog/view/situational-judgement-test/",
-        "adaptive_support": "No",
-        "description": "Presents workplace scenarios to assess decision-making and judgement skills",
-        "duration": 25,
-        "remote_support": "Yes",
-        "test_type": ["Biodata & Situational Judgement"],
-        "tags": ["decision-making", "problem-solving", "interpersonal"],
-        "suitable_for": ["Entry", "Mid", "Senior"],
-        "use_case": ["Hiring"]
-    },
-    {
-        "url": "https://www.shl.com/solutions/products/product-catalog/view/mechanical-comprehension-test/",
-        "adaptive_support": "No",
-        "description": "Tests understanding of mechanical principles like gears, pulleys, and levers",
-        "duration": 25,
-        "remote_support": "Yes",
-        "test_type": ["Knowledge & Skills"],
-        "tags": ["mechanical", "engineering", "technical"],
         "url": "https://www.shl.com/solutions/products/product-catalog/view/situational-judgement-test/",
         "adaptive_support": "No",
         "description": "Presents workplace scenarios to assess decision-making and judgement skills",
@@ -159,10 +97,6 @@ class JobInput(BaseModel):
 def health_check():
     return {"status": "healthy"}
 
-@app.get("/health")
-def health_check():
-    return {"status": "healthy"}
-
 # Matching logic function
 def recommend_assessments(input_job: Dict, catalog: pd.DataFrame):
     results = []
@@ -171,16 +105,13 @@ def recommend_assessments(input_job: Dict, catalog: pd.DataFrame):
         score = 0
 
         # Check if the level matches
-        # Check if the level matches
         if input_job["level"] in row["suitable_for"]:
             score += 1
 
         # Check if the use case matches
-        # Check if the use case matches
         if input_job["use_case"] in row["use_case"]:
             score += 1
 
-        # Calculate skill matches
         # Calculate skill matches
         skill_matches = len(set(input_job["key_skills"]) & set(row["tags"]))
         score += skill_matches
@@ -194,23 +125,11 @@ def recommend_assessments(input_job: Dict, catalog: pd.DataFrame):
                 "duration": row["duration"],
                 "remote_support": row["remote_support"],
                 "test_type": row["test_type"],
-            # Return the full assessment details with score and reason
-            result = {
-                "url": row["url"],
-                "adaptive_support": row["adaptive_support"],
-                "description": row["description"],
-                "duration": row["duration"],
-                "remote_support": row["remote_support"],
-                "test_type": row["test_type"],
                 "score": score,
                 "reason": f"Matched {skill_matches} skills + level/use_case compatibility"
             }
             results.append(result)
-                "reason": f"Matched {skill_matches} skills + level/use_case compatibility"
-            }
-            results.append(result)
 
-    # Sort results by score in descending order
     # Sort results by score in descending order
     sorted_results = sorted(results, key=lambda x: x["score"], reverse=True)
     return sorted_results
