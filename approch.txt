@@ -1,56 +1,45 @@
-SHL Assessment Recommendation Engine – Approach Document
-✅ Objective:
-To build a Streamlit-based SHL Assessment Recommendation Engine that suggests appropriate SHL assessments based on user-inputted role characteristics using SHL's product catalogue.
-
-🧠 Step-by-Step Approach:
-1. Understanding the Problem
-Goal: Recommend suitable SHL assessments based on role type, job level, and skills.
-
-Input: Role information via Streamlit UI.
-
-Output: Top recommended SHL assessments with descriptions.
-
-2. Data Preparation
-Source: SHL product catalogue (CSV or structured format).
-
-Preprocessed to ensure uniform role descriptions, levels, and assessment mappings.
-
-Encoded relevant columns where needed (e.g., role levels, skill tags).
-
-3. Recommendation Logic
-Implemented a rule-based matching + cosine similarity logic using:
-
-Job role match
-
-Level alignment
-
-Skill-based similarity (TF-IDF or keyword match)
-
-4. App Development (Streamlit)
-Built an interactive front-end with:
-
-Dropdowns for role, job level, and skills.
-
-Output section showing recommended SHL assessments.
-
-matplotlib used for optional visualizations (e.g., role fit score).
-
-Code structured in a modular way for clarity and scalability.
-
-5. Deployment
-Pushed code to a public GitHub repository.
-
-Created a requirements.txt with necessary libraries.
-
-Deployed on Streamlit Community Cloud:
-
-Selected repo, branch, and entry file (shl_1.py).
-
-Streamlit handled environment setup automatically.
-
-🧰 Tech Stack:
-Frontend: Streamlit
-
-Backend: Python (pandas, scikit-learn, matplotlib)
-
-Deployment: Streamlit Community Cloud + GitHub
+SHL Assessment Recommendation Engine - Approach Document
+Overview:
+This project implements an API for recommending SHL assessments based on a job
+description or query. The API supports two endpoints:
+● GET /health: A simple health check.
+● POST /recommend: Accepts a structured job input and returns up to 10 relevant
+SHL assessments from a predefined catalog.
+Approach:
+1. Data Preparation:
+○ A structured catalog was created using a pandas DataFrame.
+○ Each assessment includes details such as URL, description, duration,
+adaptive support, test type, and metadata like tags, suitable level, and use case.
+2. Input Format:
+The POST /recommend endpoint expects a JSON payload with the following fields:
+json
+{
+"job_title": "Data Analyst",
+"level": "Mid",
+"use_case": "Hiring",
+"key_skills": ["python", "data-analysis", "statistics"]
+}
+○
+3. Recommendation Logic:
+○ For each assessment in the catalog:
+■ +1 point if the level matches any value in suitable_for
+■ +1 point if the use_case matches
+■ +1 point per matching skill from key_skills and the assessment’s
+tags
+○ Assessments with a non-zero score are returned, sorted by score in
+descending order.
+○ A reasoning field explains the match score.
+4. Output Format:
+○ The output is a list of recommended assessments, each with full metadata
+and a reason for its inclusion.
+Tools & Libraries Used:
+● FastAPI (for API creation)
+● Pydantic (for data validation)
+● Pandas (for managing and searching the catalog)
+Assumptions:
+● The catalog is small and in-memory for demo purposes.
+● Skill matching is based on keyword overlap (case-sensitive exact match).
+● Query is structured; free-form natural language is not handled in this version.
+Deployment & Testing:
+● Tested locally using Postman
+● The API is easily deployable on platforms like Render and Railway
