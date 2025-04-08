@@ -78,6 +78,10 @@ def recommend_assessments(input_job: Dict, catalog: pd.DataFrame):
 
     sorted_results = sorted(results, key=lambda x: x["score"], reverse=True)
     return sorted_results
+    
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
 
 # API endpoint
 @app.post("/recommend")
