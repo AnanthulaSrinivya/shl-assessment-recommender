@@ -2,9 +2,17 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Dict
 import pandas as pd
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+app.add_middleware(
+     CORSMiddleware,
+     allow_origins=["*"], 
+     allow_credentials=True,
+     allow_methods=["*"],
+     allow_headers=["*"],
+ )
 # Updated catalog with additional real SHL assessments
 catalog = pd.DataFrame([
     {
